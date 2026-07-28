@@ -71,14 +71,21 @@ This project uses the Vibe Coding methodology. As an AI Agent, you MUST follow t
 
 ### 1. \`close "${name}"\` Command
 When the user types this:
-- **First**, write a summary of what was accomplished and what needs to be done next into \`.vibe/handoff.md\`.
-- Safely save the current system state.
-- Commit and push the changes with **admin approval**.
+- **First**, write a detailed summary of what was accomplished in this session and what exactly needs to be done next into \`.vibe/handoff.md\`.
+- Check for any uncommitted changes.
+- Automatically stage, commit, and push all changes to the repository (ask for admin approval if needed).
+- Confirm to the user that the handoff is saved and the code is safely pushed.
 
 ### 2. \`load "${name}"\` Command
 When the user types this to start a new session:
-- **Immediately** read \`.vibe/handoff.md\` to understand exactly where the previous chat session left off and pick up the context seamlessly.
-- Read \`.vibe/${name}.md\` to understand the current vibe and goals.
+- **Immediately** read \`.vibe/handoff.md\` to understand exactly where the previous chat session left off.
+- Check the git status to find committed and uncommitted changes.
+- Display a visually structured **Status Report** to the user exactly like this:
+  - 📝 **Summary of Last Session**: (Briefly summarize what was done in the last 'close').
+  - 🚦 **Drift Status**: (If the current code perfectly matches the handoff, show 🟢 No Drift. If there are unexpected changes, show 🔴 Drift Detected!).
+  - 💾 **Git Status**: (Show number of Uncommitted and Committed files).
+  - 🎯 **Next Steps**: (Tell the user exactly what needs to be done next based on the handoff).
+- Read \`.vibe/${name}.md\` to understand the overall project vibe.
 - **IMPORTANT**: You MUST explicitly display this message to the user: *"🔒 Security reminder: Never commit API keys or passwords. Use the \`audit\` command to check for vulnerabilities."*
 
 ### 3. \`audit "${name}"\` Command
