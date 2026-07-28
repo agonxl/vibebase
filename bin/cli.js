@@ -43,18 +43,40 @@ function askAIAndGenerate(name) {
     if (answer.trim() === '2') aiType = 'claude';
     if (answer.trim() === '3') aiType = 'antigravity';
     
-    rl.question(`\n⚠️  The .vibe/ folder and VIBE.md will be created for the '${name}' project.\nDo you approve? (Y/n): `, (confirm) => {
-      if (confirm.toLowerCase() === 'y' || confirm.trim() === '') {
-        generateFiles(name, aiType);
-      } else {
-        console.log(chalk.red('❌ Operation cancelled.'));
-      }
-      rl.close();
+    rl.question(`\nDo you want to scaffold a starter project?\n1) No (Just Vibe)\n2) Next.js (React + Tailwind)\n3) Vite (React SPA)\nSelect (1/2/3): `, (templateAnswer) => {
+      let template = 'none';
+      if (templateAnswer.trim() === '2') template = 'nextjs';
+      if (templateAnswer.trim() === '3') template = 'vite';
+
+      rl.question(`\n⚠️  The .vibe/ folder and VIBE.md will be created for the '${name}' project.\nDo you approve? (Y/n): `, (confirm) => {
+        if (confirm.toLowerCase() === 'y' || confirm.trim() === '') {
+          scaffoldAndGenerate(name, aiType, template);
+        } else {
+          console.log(chalk.red('❌ Operation cancelled.'));
+        }
+        rl.close();
+      });
     });
   });
 }
 
-function generateFiles(name, aiType) {
+function scaffoldAndGenerate(name, aiType, template) {
+  const { spawnSync } = require('child_process');
+
+  if (template === 'nextjs') {
+    console.log(chalk.cyan(`\n📦 Bootstrapping Next.js (React + Tailwind)... This might take a minute.`));
+    spawnSync('npx', ['--yes', 'create-next-app@latest', './', '--typescript', '--eslint', '--tailwind', '--app', '--src-dir', '--import-alias', '@/*', '--use-npm'], { stdio: 'inherit' });
+  } else if (template === 'vite') {
+    console.log(chalk.cyan(`\n📦 Bootstrapping Vite (React + TS)...`));
+    spawnSync('npm', ['create', 'vite@latest', './', '--', '--template', 'react-ts'], { stdio: 'inherit' });
+    console.log(chalk.cyan(`📦 Installing Vite dependencies...`));
+    spawnSync('npm', ['install'], { stdio: 'inherit' });
+  }
+
+  generateFiles(name, aiType, template);
+}
+
+function generateFiles(name, aiType, template) {
   const targetDir = process.cwd();
   const vibeDir = path.join(targetDir, '.vibe');
 
@@ -130,14 +152,19 @@ When a chat session is closed using the \`close\` command, the AI will write a s
 - (No handoff recorded yet)
 `;
 
-  const architectureContent = `# 🏗️ Architecture & Rules
+  let architectureContent = `# 🏗️ Architecture & Rules
 
 Define your project's architectural decisions, tech stack, and coding conventions here.
 When the \`review\` command is run, the AI will judge your code based on these rules.
 
 ## Tech Stack
-- 
-`;
+- `;
+
+  if (template === 'nextjs') {
+    architectureContent += `Next.js (App Router)\n- React\n- TailwindCSS\n- TypeScript\n`;
+  } else if (template === 'vite') {
+    architectureContent += `Vite\n- React\n- TypeScript\n`;
+  }
 
   fs.writeFileSync(path.join(targetDir, 'VIBE.md'), vibeInstructions);
   fs.writeFileSync(path.join(vibeDir, `${name}.md`), heartContent);
