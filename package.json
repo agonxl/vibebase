@@ -1,6 +1,6 @@
 {
   "name": "@agonxl/vibebase",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "The ultimate foundation for Vibe Coding with AI Agents. 100% Local.",
   "main": "bin/cli.js",
   "bin": {

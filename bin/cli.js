@@ -100,12 +100,15 @@ This project uses the Vibe Coding methodology. As an AI Agent, you MUST follow t
 When the user types this:
 - **First**, write a detailed summary of what was accomplished in this session and what exactly needs to be done next into \`.vibe/handoff.md\`.
 - Check for any uncommitted changes.
-- Automatically stage, commit, and push all changes to the repository (ask for admin approval if needed).
+- Automatically stage all changes with \`git add .\`.
+- Commit with a descriptive message: \`git commit -m "Auto-handoff: [brief description]"\`.
+- Push to the repository using \`git push\` IMMEDIATELY without asking for permission.
 - Confirm to the user that the handoff is saved and the code is safely pushed.
 
 ### 2. \`load "${name}"\` Command
 When the user types this to start a new session:
 - **Immediately** read \`.vibe/handoff.md\` to understand exactly where the previous chat session left off.
+- If a \`package.json\` exists in the root, read it to understand the project's dependencies and stack.
 - Check the git status to find committed and uncommitted changes.
 - Display a visually structured **Status Report** to the user exactly like this:
   - 📝 **Summary of Last Session**: (Briefly summarize what was done in the last 'close').
@@ -117,7 +120,7 @@ When the user types this to start a new session:
 
 ### 3. \`audit "${name}"\` Command
 When the user types this:
-- Scan the codebase for hardcoded API keys, passwords, and sensitive info.
+- Scan the entire codebase (especially \`src/\` or \`app/\` folders) using Regex for hardcoded API keys (\`sk-\`, \`key=\`, \`password=\`), tokens, and sensitive info.
 - Move any sensitive data found into a \`.env\` file.
 - Ensure \`.env\` is in \`.gitignore\`.
 - Suggest security improvements.
@@ -175,6 +178,12 @@ When the \`review\` command is run, the AI will judge your code based on these r
   fs.writeFileSync(path.join(vibeDir, `${name}.md`), heartContent);
   fs.writeFileSync(path.join(vibeDir, `handoff.md`), handoffContent);
   fs.writeFileSync(path.join(vibeDir, `architecture.md`), architectureContent);
+
+  const gitignorePath = path.join(targetDir, '.gitignore');
+  if (!fs.existsSync(gitignorePath)) {
+    fs.writeFileSync(gitignorePath, "node_modules\n.env\n.vibe/archive.md\n");
+    console.log(chalk.blue(`  - .gitignore generated`));
+  }
 
   console.log(chalk.green(`\n✅ Successfully created:`));
   console.log(`  - VIBE.md (AI Instructions)`);
@@ -257,12 +266,41 @@ program
     let hasEnv = false;
     let completedGoals = 0;
     let totalGoals = 0;
+    let leakedKeys = [];
     
     if (fs.existsSync(path.join(targetDir, '.env'))) {
       hasEnv = true;
     }
 
-    const mdFiles = fs.readdirSync(vibeDir).filter(f => f.endsWith('.md') && f !== 'handoff.md' && f !== 'architecture.md');
+    // SECURITY SCANNER
+    function scanDirectory(dir) {
+      const files = fs.readdirSync(dir);
+      for (const file of files) {
+        const fullPath = path.join(dir, file);
+        if (fs.statSync(fullPath).isDirectory()) {
+          if (file !== 'node_modules' && file !== '.git' && file !== '.vibe' && file !== 'dist' && file !== 'build') {
+            scanDirectory(fullPath);
+          }
+        } else {
+          // Check for .js, .ts, .json, .md files (excluding package-lock.json)
+          if (file.match(/\.(js|ts|jsx|tsx|json|md)$/) && file !== 'package-lock.json') {
+            try {
+              const content = fs.readFileSync(fullPath, 'utf8');
+              const regex = /(sk-[a-zA-Z0-9]{20,}|['"]api_key['"]\s*:\s*['"][a-zA-Z0-9_-]{20,}['"]|password\s*=\s*['"][^'"]+['"])/g;
+              let match;
+              while ((match = regex.exec(content)) !== null) {
+                leakedKeys.push({ file: fullPath, match: match[0] });
+              }
+            } catch (e) {}
+          }
+        }
+      }
+    }
+    
+    console.log(chalk.cyan(`🔍 Scanning codebase for security leaks...`));
+    scanDirectory(targetDir);
+
+    const mdFiles = fs.readdirSync(vibeDir).filter(f => f.endsWith('.md') && f !== 'handoff.md' && f !== 'architecture.md' && f !== 'archive.md');
     
     if (mdFiles.length > 0) {
       const heartFile = mdFiles[0]; 
@@ -283,10 +321,18 @@ program
 
     console.log(chalk.bold.magenta(`\n✨ --- VIBE REPORT --- ✨`));
     
-    if (hasEnv) {
-      console.log(chalk.green(`🔒 Security: Excellent (.env file found)`));
+    if (leakedKeys.length > 0) {
+      console.log(chalk.red.bold(`🚨 CRITICAL SECURITY LEAKS FOUND: ${leakedKeys.length}`));
+      leakedKeys.forEach(leak => {
+        console.log(chalk.red(`   -> In ${path.relative(targetDir, leak.file)}`));
+      });
+      console.log(chalk.yellow(`   💡 Run 'audit' in your AI chat to fix these immediately!`));
     } else {
-      console.log(chalk.yellow(`⚠️ Security Warning: No .env file found. Be careful with API keys!`));
+      if (hasEnv) {
+        console.log(chalk.green(`🔒 Security: Excellent (.env file found, 0 leaks detected)`));
+      } else {
+        console.log(chalk.yellow(`⚠️ Security Warning: No .env file found. Be careful with API keys!`));
+      }
     }
 
     console.log(chalk.cyan(`🎯 Goals: ${completedGoals}/${totalGoals} completed`));
