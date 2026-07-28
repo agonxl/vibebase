@@ -1,7 +1,7 @@
 <div align="center">
   <h1>🌊 learnvibecode</h1>
-  <p><strong>The simplest way to set up your project for Vibe Coding with AI.</strong></p>
-  <p>Zero configuration. Just run one command and start coding.</p>
+  <p><strong>The ultimate foundation for Vibe Coding with AI Agents.</strong></p>
+  <p>Vibecoder friendly. 100% Local. Zero configuration.</p>
 </div>
 
 ---
@@ -14,36 +14,47 @@ You don't even need to install anything. Just open your terminal, go to your pro
 npx learnvibecode
 ```
 
-The interactive wizard will ask you 2 simple questions and automatically set up your project for AI agents (like Claude, Cursor, ChatGPT).
+The interactive wizard will ask you 2 simple questions and instantly set up your project for AI agents (like Claude Code, Cursor, ChatGPT).
 
 ### What does it do?
-It instantly generates:
-1. **An AI-Optimized README:** Trains any AI agent on how to interact with your project (`close`, `load`, `audit` commands).
-2. **AI Rules:** Generates `.cursorrules` or `clauderules.md` automatically so your AI never forgets the project's vibe.
-3. **The Heart File:** Creates a `[project-name].md` file to track your goals, ideas, and the soul of your project.
+It builds a complete **Agentic Workflow Architecture** that stays 100% on your local machine:
+1. **\`VIBE.md\` (AI Instructions):** Trains any AI agent on how to interact with your project using strict commands (\`close\`, \`load\`, \`audit\`, \`review\`, \`compress\`).
+2. **\`.vibe/\` Folder (The Foundation):**
+   - **\`[project-name].md\`**: The Heart of your project. Tracks goals, ideas, and your daily vibe.
+   - **\`handoff.md\`**: For agent shift-handovers. AI saves its context here so a new chat session can pick up exactly where it left off.
+   - **\`architecture.md\`**: Define your tech stack and coding conventions. The AI will enforce these during code reviews.
+3. **AI Rules:** Generates \`.cursorrules\` or \`clauderules.md\` automatically so your AI never forgets the project's vibe.
 
 ---
 
-## 🛠️ Built-in Superpowers
+## 🤖 The AI Commands (Prompt Engineering)
 
-Once your project is set up, you get access to these professional tools out of the box:
+Once initialized, you can type these magic words into your AI Chat to trigger powerful, pre-programmed behaviors:
 
-### 📦 Pack for ChatGPT
-Not using an integrated AI editor? No problem.
+- **\`load\`**: The AI instantly reads \`.vibe/handoff.md\` and picks up exactly where the last chat session left off.
+- **\`close\`**: The AI writes a summary to \`.vibe/handoff.md\` for the next session, saves your state, and pushes to git.
+- **\`review\`**: The AI acts as a Senior Developer, reading your \`architecture.md\`, and ruthlessly reviews your recent code changes.
+- **\`compress\`**: The AI reads your Heart file, archives completed goals, and keeps your project context lightweight and fast.
+- **\`audit\`**: The AI scans your codebase for leaked API keys, moves them to \`.env\`, and checks \`.gitignore\`.
+
+---
+
+## 🛠️ CLI Superpowers (Terminal Commands)
+
+Not using an integrated AI editor? No problem. Use our built-in terminal commands:
+
+### 📦 Pack Context for Web AI
 ```bash
 npx learnvibecode pack
 ```
-*Bundles your entire project's context and vibe into one file (`vibe-context.txt`) so you can copy-paste it directly to ChatGPT or Claude Web.*
+*Bundles your entire \`.vibe/\` folder and instructions into one file (\`vibe-context.txt\`). Just copy and paste it directly into ChatGPT or Claude Web!*
 
 ### 🛡️ Vibe & Security Check
 ```bash
 npx learnvibecode check
 ```
-*Scans your project for forgotten API keys and shows you a colorful progress report of your goals.*
+*Scans your project for forgotten API keys and prints a beautiful, colorful progress report of your goals directly to the terminal.*
 
 ---
-
-## 🌟 Why Vibe Coding?
-Coding with AI shouldn't mean fighting with prompts. `learnvibecode` creates a professional structure that allows you to just "vibe" while the AI handles the heavy lifting based on a predefined set of instructions.
 
 **Keep it simple. Keep the vibe high. ✨**

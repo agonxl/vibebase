@@ -1,7 +1,7 @@
 {
   "name": "learnvibecode",
   "version": "1.0.0",
-  "description": "Vibe coding starter template generator",
+  "description": "The ultimate foundation for Vibe Coding with AI Agents. 100% Local.",
   "main": "bin/cli.js",
   "bin": {
     "learnvibecode": "./bin/cli.js"
