@@ -3,6 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const readline = require('readline');
+const http = require('http');
 const { program } = require('commander');
 const chalk = require('chalk');
 
@@ -265,6 +266,80 @@ program
     }
     console.log();
     process.exit(0);
+  });
+
+// UI COMMAND
+program
+  .command('ui')
+  .description('Open the Web Control Panel')
+  .action(() => {
+    const targetDir = process.cwd();
+    const vibeDir = path.join(targetDir, '.vibe');
+    
+    if (!fs.existsSync(vibeDir)) {
+      console.log(chalk.red(`❌ .vibe/ folder not found. Run 'vibebase init' first.`));
+      process.exit(1);
+    }
+
+    const server = http.createServer((req, res) => {
+        if (req.url === '/api/vibe') {
+            let todo = [];
+            let done = [];
+            let handoff = '';
+            let hasEnv = fs.existsSync(path.join(targetDir, '.env'));
+
+            const mdFiles = fs.readdirSync(vibeDir).filter(f => f.endsWith('.md') && f !== 'handoff.md' && f !== 'architecture.md' && f !== 'archive.md');
+            
+            if (mdFiles.length > 0) {
+                try {
+                    const content = fs.readFileSync(path.join(vibeDir, mdFiles[0]), 'utf8');
+                    const lines = content.split('\n');
+                    lines.forEach(line => {
+                        if (line.includes('- [ ]')) todo.push(line.replace('- [ ]', '').trim());
+                        if (line.includes('- [x]') || line.includes('- [X]')) done.push(line.replace(/- \[x\]/i, '').trim());
+                    });
+                } catch(e){}
+            }
+
+            if (fs.existsSync(path.join(vibeDir, 'handoff.md'))) {
+                handoff = fs.readFileSync(path.join(vibeDir, 'handoff.md'), 'utf8');
+            }
+
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ todo, done, handoff, hasEnv }));
+            return;
+        }
+
+        const uiDir = path.join(__dirname, '../ui');
+        let filePath = path.join(uiDir, req.url === '/' ? 'index.html' : req.url);
+        
+        let extname = path.extname(filePath);
+        let contentType = 'text/html';
+        switch (extname) {
+            case '.js': contentType = 'text/javascript'; break;
+            case '.css': contentType = 'text/css'; break;
+        }
+
+        fs.readFile(filePath, (error, content) => {
+            if (error) {
+                res.writeHead(404);
+                res.end('File not found');
+            } else {
+                res.writeHead(200, { 'Content-Type': contentType });
+                res.end(content, 'utf-8');
+            }
+        });
+    });
+
+    const PORT = 3000;
+    server.listen(PORT, () => {
+        console.log(chalk.magenta.bold(`\n✨ Vibebase Control Panel running at http://localhost:${PORT}`));
+        console.log(chalk.cyan(`Press Ctrl+C to stop the server.`));
+        
+        const { exec } = require('child_process');
+        const start = (process.platform == 'darwin'? 'open': process.platform == 'win32'? 'start': 'xdg-open');
+        exec(`${start} http://localhost:${PORT}`);
+    });
   });
 
 // FORCE INIT IF NO ARGUMENTS

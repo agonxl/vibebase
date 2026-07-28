@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vibebase Control Panel</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="background-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+    
+    <div class="dashboard-container">
+        <header class="glass-panel">
+            <div class="logo">
+                <span class="wave">🌊</span>
+                <h1>Vibebase <span class="highlight">Control Panel</span></h1>
+            </div>
+            <div class="vibe-score">
+                <span id="score-text">Loading...</span>
+                <div class="progress-ring-container">
+                    <svg class="progress-ring" width="50" height="50">
+                        <circle class="progress-ring__circle" stroke="white" stroke-width="4" fill="transparent" r="20" cx="25" cy="25"/>
+                    </svg>
+                </div>
+            </div>
+        </header>
+
+        <main class="grid-layout">
+            <!-- Left Column -->
+            <div class="col">
+                <section class="glass-panel card">
+                    <h2>🎯 Yapılacaklar (To-Do)</h2>
+                    <ul id="todo-list" class="task-list">
+                        <li class="loading">Yükleniyor...</li>
+                    </ul>
+                </section>
+                
+                <section class="glass-panel card">
+                    <h2>✅ Yapılanlar (Done)</h2>
+                    <ul id="done-list" class="task-list done">
+                        <li class="loading">Yükleniyor...</li>
+                    </ul>
+                </section>
+            </div>
+
+            <!-- Right Column -->
+            <div class="col">
+                <section class="glass-panel card">
+                    <h2>🤝 Son Durum (Handoff)</h2>
+                    <div id="handoff-content" class="markdown-content">
+                        Yükleniyor...
+                    </div>
+                </section>
+
+                <section class="glass-panel card security-card" id="security-card">
+                    <h2>🛡️ Güvenlik Durumu</h2>
+                    <div class="security-status" id="security-status">
+                        Yükleniyor...
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
