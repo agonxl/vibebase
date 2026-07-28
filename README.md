@@ -1,5 +1,5 @@
 <div align="center">
-  <h1>🌊 learnvibecode</h1>
+  <h1>🌊 vibebase</h1>
   <p><strong>The ultimate foundation for Vibe Coding with AI Agents.</strong></p>
   <p>Vibecoder friendly. 100% Local. Zero configuration.</p>
 </div>
@@ -11,7 +11,7 @@
 You don't even need to install anything. Just open your terminal, go to your project folder, and run:
 
 ```bash
-npx learnvibecode
+npx vibebase
 ```
 
 The interactive wizard will ask you 2 simple questions and instantly set up your project for AI agents (like Claude Code, Cursor, ChatGPT).
@@ -45,13 +45,13 @@ Not using an integrated AI editor? No problem. Use our built-in terminal command
 
 ### 📦 Pack Context for Web AI
 ```bash
-npx learnvibecode pack
+npx vibebase pack
 ```
 *Bundles your entire \`.vibe/\` folder and instructions into one file (\`vibe-context.txt\`). Just copy and paste it directly into ChatGPT or Claude Web!*
 
 ### 🛡️ Vibe & Security Check
 ```bash
-npx learnvibecode check
+npx vibebase check
 ```
 *Scans your project for forgotten API keys and prints a beautiful, colorful progress report of your goals directly to the terminal.*
 

@@ -12,7 +12,7 @@ const rl = readline.createInterface({
 });
 
 program
-  .name('learnvibecode')
+  .name('vibebase')
   .description('Vibe coding assistant tool')
   .version('1.0.0');
 
@@ -164,7 +164,7 @@ program
     const vibeDir = path.join(targetDir, '.vibe');
     
     if (!fs.existsSync(vibeDir)) {
-      console.log(chalk.red(`❌ .vibe/ folder not found. Run 'learnvibecode init' first.`));
+      console.log(chalk.red(`❌ .vibe/ folder not found. Run 'vibebase init' first.`));
       process.exit(1);
     }
 
@@ -201,7 +201,7 @@ program
     const vibeDir = path.join(targetDir, '.vibe');
     
     if (!fs.existsSync(vibeDir)) {
-      console.log(chalk.red(`❌ .vibe/ folder not found. Run 'learnvibecode init' first.`));
+      console.log(chalk.red(`❌ .vibe/ folder not found. Run 'vibebase init' first.`));
       process.exit(1);
     }
 
