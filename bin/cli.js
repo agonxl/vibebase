@@ -331,8 +331,8 @@ program
         });
     });
 
-    const PORT = 3000;
-    server.listen(PORT, () => {
+    server.listen(0, () => {
+        const PORT = server.address().port;
         console.log(chalk.magenta.bold(`\n✨ Vibebase Control Panel running at http://localhost:${PORT}`));
         console.log(chalk.cyan(`Press Ctrl+C to stop the server.`));
         
