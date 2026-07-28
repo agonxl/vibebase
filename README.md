@@ -61,6 +61,25 @@ npx @agonxl/vibebase check
 ```
 *Scans your project for forgotten API keys and prints a beautiful, colorful progress report of your goals directly to the terminal.*
 
+### 🌐 Web Control Panel (v2.0+)
+```bash
+npx @agonxl/vibebase ui
+```
+*Instantly launches a beautiful, dark-mode Glassmorphism Web Dashboard in your browser. It visually tracks your project goals, displays real-time Vibe scores, and monitors your handoff and security status. 100% Local, zero configuration required!*
+
+---
+
+## ❓ Troubleshooting & FAQ
+
+**1. "NPM error: ETARGET / No matching version found"**
+If you just published a new version and immediately try to run it via `npx`, NPM's global CDN cache might need a minute to sync. 
+**Fix:** Run `npm cache clean --force` or simply wait 60 seconds and run `npx --yes @agonxl/vibebase@latest` again.
+
+**2. The AI says "load [project] not found"**
+- If you are using Cursor, ensure you typed the exact project name you entered in the wizard (check the filename inside the `.vibe/` folder, e.g., `.vibe/myproject.md`).
+- If you are using ChatGPT Web, Kimi, or Codex, the AI doesn't automatically know our custom commands. **Fix:** Run `npx @agonxl/vibebase pack`, copy the output, and paste it into the AI chat first to teach it the rules!
+- If the AI is not reading the rules automatically, just type `@VIBE.md load [project]` to force it to read the instructions.
+
 ---
 
 **Keep it simple. Keep the vibe high. ✨**
