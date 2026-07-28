@@ -18,7 +18,7 @@ program
 
 // INIT COMMAND
 program
-  .command('init [projectName]')
+  .command('init [projectName]', { isDefault: true })
   .description('Initialize a vibe coding project')
   .action((projectName) => {
     if (!projectName) {
