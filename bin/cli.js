@@ -19,7 +19,7 @@ program
 // INIT COMMAND
 program
   .command('init [projectName]', { isDefault: true })
-  .description('Initialize a vibe coding project')
+  .description('Start Vibe Coding wizard (Default)')
   .action((projectName) => {
     if (!projectName) {
       rl.question('What is the name of your project? ', (answer) => {
@@ -167,7 +167,7 @@ When the \`review\` command is run, the AI will judge your code based on these r
 // PACK COMMAND
 program
   .command('pack')
-  .description('Packages the .vibe context into vibe-context.txt for copy-pasting')
+  .description('Bundle context for ChatGPT/Web AI')
   .action(() => {
     const targetDir = process.cwd();
     const vibeDir = path.join(targetDir, '.vibe');
@@ -204,7 +204,7 @@ program
 // CHECK COMMAND
 program
   .command('check')
-  .description('Performs a Vibe and Security scan')
+  .description('Run Security & Vibe Check')
   .action(() => {
     const targetDir = process.cwd();
     const vibeDir = path.join(targetDir, '.vibe');
@@ -259,5 +259,10 @@ program
     console.log();
     process.exit(0);
   });
+
+// FORCE INIT IF NO ARGUMENTS
+if (process.argv.length === 2) {
+  process.argv.push('init');
+}
 
 program.parse(process.argv);
