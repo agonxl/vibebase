@@ -15,14 +15,14 @@ function renderDashboard(data) {
     todoList.innerHTML = '';
     doneList.innerHTML = '';
 
-    if (data.todo.length === 0) todoList.innerHTML = `<li><span style="opacity: 0.5">Henüz hedef eklenmemiş...</span></li>`;
+    if (data.todo.length === 0) todoList.innerHTML = `<li><span style="opacity: 0.5">No goals added yet...</span></li>`;
     data.todo.forEach(task => {
         const li = document.createElement('li');
         li.textContent = task;
         todoList.appendChild(li);
     });
 
-    if (data.done.length === 0) doneList.innerHTML = `<li><span style="opacity: 0.5">Henüz tamamlanan hedef yok...</span></li>`;
+    if (data.done.length === 0) doneList.innerHTML = `<li><span style="opacity: 0.5">No completed goals yet...</span></li>`;
     data.done.forEach(task => {
         const li = document.createElement('li');
         li.textContent = task;
@@ -38,14 +38,14 @@ function renderDashboard(data) {
     document.getElementById('score-text').textContent = `%${percentage} Vibe`;
     updateProgressRing(percentage);
 
-    document.getElementById('handoff-content').textContent = data.handoff || "Handoff notu bulunamadı.";
+    document.getElementById('handoff-content').textContent = data.handoff || "No handoff note found.";
 
     const secStatus = document.getElementById('security-status');
     if (data.hasEnv) {
-        secStatus.innerHTML = `✅ .env dosyası güvende!`;
+        secStatus.innerHTML = `✅ .env file is secure!`;
         secStatus.className = 'security-status security-safe';
     } else {
-        secStatus.innerHTML = `⚠️ DİKKAT: .env dosyası bulunamadı. Şifre sızıntılarına açık olabilirsiniz!`;
+        secStatus.innerHTML = `⚠️ WARNING: .env file not found. You might be vulnerable to secrets leakage!`;
         secStatus.className = 'security-status security-warning';
     }
 }
