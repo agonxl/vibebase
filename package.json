@@ -1,0 +1,19 @@
+{
+  "name": "learnvibecode",
+  "version": "1.0.0",
+  "description": "Vibe coding starter template generator",
+  "main": "bin/cli.js",
+  "bin": {
+    "learnvibecode": "./bin/cli.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "vibe",
+    "coding",
+    "cli"
+  ],
+  "author": "",
+  "license": "ISC"
+}
