@@ -30,6 +30,7 @@ When you start a new chat session to continue working on this project, type this
 - Seamlessly loads where you left off in the previous chat session.
 - Pulls the latest project contents and context into the new chat.
 - Reads your "Heart of the Project" file to understand the vibe and current goals.
+- **IMPORTANT**: As soon as this command is executed, the AI agent MUST explicitly display this message to the user: *"🔒 Security reminder: Never commit API keys or passwords. Use the \`audit\` command to check for vulnerabilities."*
 
 ### 3. \`audit "${name}"\` Command
 When you type this command, the AI agent will perform a security check on your project. Its functions are:
