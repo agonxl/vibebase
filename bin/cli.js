@@ -409,14 +409,14 @@ program
         });
     });
 
-    server.listen(0, () => {
+    server.listen(0, '127.0.0.1', () => {
         const PORT = server.address().port;
-        console.log(chalk.magenta.bold(`\n✨ Vibebase Control Panel running at http://localhost:${PORT}`));
+        console.log(chalk.magenta.bold(`\n✨ Vibebase Control Panel running at http://127.0.0.1:${PORT}`));
         console.log(chalk.cyan(`Press Ctrl+C to stop the server.`));
         
         const { exec } = require('child_process');
         const start = (process.platform == 'darwin'? 'open': process.platform == 'win32'? 'start': 'xdg-open');
-        exec(`${start} http://localhost:${PORT}`);
+        exec(`${start} http://127.0.0.1:${PORT}`);
     });
   });
 
