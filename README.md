@@ -11,7 +11,7 @@
 You don't even need to install anything. Just open your terminal, go to your project folder, and run:
 
 ```bash
-npx vibebase
+npx @agonxl/vibebase
 ```
 
 The interactive wizard will ask you 2 simple questions and instantly set up your project for AI agents (like Claude Code, Cursor, ChatGPT).
@@ -45,13 +45,13 @@ Not using an integrated AI editor? No problem. Use our built-in terminal command
 
 ### 📦 Pack Context for Web AI
 ```bash
-npx vibebase pack
+npx @agonxl/vibebase pack
 ```
 *Bundles your entire \`.vibe/\` folder and instructions into one file (\`vibe-context.txt\`). Just copy and paste it directly into ChatGPT or Claude Web!*
 
 ### 🛡️ Vibe & Security Check
 ```bash
-npx vibebase check
+npx @agonxl/vibebase check
 ```
 *Scans your project for forgotten API keys and prints a beautiful, colorful progress report of your goals directly to the terminal.*
 
