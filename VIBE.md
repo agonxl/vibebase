@@ -1,6 +1,3 @@
---- VIBE CONTEXT ---
-
-=== File: VIBE.md ===
 [![Vibe: High](https://img.shields.io/badge/Vibe-Coding-purple.svg)](#)
 
 # 🌊 Vibe Coding Instructions
@@ -38,39 +35,3 @@ When the user types this:
 When the user types this:
 - Read `.vibe/architecture.md` to understand the project's coding standards.
 - Act as a Senior Developer and mercilessly review recent code changes against those architectural rules.
-
-
-=== File: .vibe/architecture.md ===
-# 🏗️ Architecture & Rules
-
-Define your project's architectural decisions, tech stack, and coding conventions here.
-When the `review` command is run, the AI will judge your code based on these rules.
-
-## Tech Stack
-- 
-
-
-=== File: .vibe/handoff.md ===
-# 🤝 Handoff Notes
-
-When a chat session is closed using the `close` command, the AI will write a summary here so the next chat session can seamlessly pick up the work using the `load` command.
-
-### Last Status
-- (No handoff recorded yet)
-
-
-=== File: .vibe/learnvibecode.md ===
-# 🫀 The Heart of the Project (learnvibecode)
-
-This file is the heart of the developer. Keep the soul of your project, ideas, and progress here.
-
-## 📝 Notes
-- 
-
-## 🎯 Goals
-- [ ] Define the initial goal
-
-## 🧠 Vibe and Ideas
-(Write down your vibe here)
-
-

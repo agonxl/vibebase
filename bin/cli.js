@@ -41,7 +41,7 @@ function askAIAndGenerate(name) {
     if (answer.trim() === '1') aiType = 'cursor';
     if (answer.trim() === '2') aiType = 'claude';
     
-    rl.question(`\n⚠️  Vibe Coding files will be created for the '${name}' project.\nDo you approve? (Y/n): `, (confirm) => {
+    rl.question(`\n⚠️  The .vibe/ folder and VIBE.md will be created for the '${name}' project.\nDo you approve? (Y/n): `, (confirm) => {
       if (confirm.toLowerCase() === 'y' || confirm.trim() === '') {
         generateFiles(name, aiType);
       } else {
@@ -54,44 +54,54 @@ function askAIAndGenerate(name) {
 
 function generateFiles(name, aiType) {
   const targetDir = process.cwd();
+  const vibeDir = path.join(targetDir, '.vibe');
+
+  if (!fs.existsSync(vibeDir)){
+    fs.mkdirSync(vibeDir, { recursive: true });
+  }
   
-  const readmeContent = `[![Vibe: High](https://img.shields.io/badge/Vibe-Coding-purple.svg)](#)
+  const vibeInstructions = `[![Vibe: High](https://img.shields.io/badge/Vibe-Coding-purple.svg)](#)
 
-# Welcome to Vibe Coding! 🚀
+# 🌊 Vibe Coding Instructions
 
-This project is specially designed for developers who are new to the vibe coding methodology. 
+This project uses the Vibe Coding methodology. As an AI Agent, you MUST follow these commands when asked by the user:
 
-## 🛠️ Core Concepts and Commands
+## 🛠️ Core Commands
 
 ### 1. \`close "${name}"\` Command
-When you finish your work or want to take a break, you can type this command in the chat. Its functions are:
-- Safely saves your current system state.
-- Commits and pushes the changes with **admin approval**.
-- Prepares the context so you can easily resume later.
+When the user types this:
+- **First**, write a summary of what was accomplished and what needs to be done next into \`.vibe/handoff.md\`.
+- Safely save the current system state.
+- Commit and push the changes with **admin approval**.
 
 ### 2. \`load "${name}"\` Command
-When you start a new chat session to continue working on this project, type this command. Its functions are:
-- Seamlessly loads where you left off in the previous chat session.
-- Pulls the latest project contents and context into the new chat.
-- Reads your "Heart of the Project" file to understand the vibe and current goals.
-- **IMPORTANT**: As soon as this command is executed, the AI agent MUST explicitly display this message to the user: *"🔒 Security reminder: Never commit API keys or passwords. Use the \`audit\` command to check for vulnerabilities."*
+When the user types this to start a new session:
+- **Immediately** read \`.vibe/handoff.md\` to understand exactly where the previous chat session left off and pick up the context seamlessly.
+- Read \`.vibe/${name}.md\` to understand the current vibe and goals.
+- **IMPORTANT**: You MUST explicitly display this message to the user: *"🔒 Security reminder: Never commit API keys or passwords. Use the \`audit\` command to check for vulnerabilities."*
 
 ### 3. \`audit "${name}"\` Command
-When you type this command, the AI agent will perform a security check on your project. Its functions are:
-- Scans your codebase for hardcoded API keys, passwords, and sensitive information.
-- Warns you if any sensitive data is found and securely moves them to a \`.env\` file.
-- Ensures your \`.env\` file is added to \`.gitignore\` to prevent accidental leaks.
-- Performs a basic security audit of your code and suggests improvements.
+When the user types this:
+- Scan the codebase for hardcoded API keys, passwords, and sensitive info.
+- Move any sensitive data found into a \`.env\` file.
+- Ensure \`.env\` is in \`.gitignore\`.
+- Suggest security improvements.
 
-### 4. The Heart of the Project: \`${name}.md\`
-When you join the project, this file is created for you.
-- This file is considered the "heart" of the developer.
-- You will keep your daily logs, processes, ideas, and the project's "vibe" in this file.
+### 4. \`compress\` Command
+When the user types this:
+- Read \`.vibe/${name}.md\`.
+- Move all completed \`[x]\` goals to \`.vibe/archive.md\`.
+- Keep the main \`.vibe/${name}.md\` file clean, organized, and fast.
+
+### 5. \`review\` Command
+When the user types this:
+- Read \`.vibe/architecture.md\` to understand the project's coding standards.
+- Act as a Senior Developer and mercilessly review recent code changes against those architectural rules.
 `;
 
   const heartContent = `# 🫀 The Heart of the Project (${name})
 
-This file is the heart of the developer. You will keep the soul of your project, the decisions made, your interactions with AI, and your progress status here.
+This file is the heart of the developer. Keep the soul of your project, ideas, and progress here.
 
 ## 📝 Notes
 - 
@@ -100,47 +110,77 @@ This file is the heart of the developer. You will keep the soul of your project,
 - [ ] Define the initial goal
 
 ## 🧠 Vibe and Ideas
-(Write down your ideas and the "vibe" of the project here)
-
----
-*💡 Reminder: When you finish your work, you can type \`close "${name}"\` in the chat to save the system state and send it for admin approval.*
+(Write down your vibe here)
 `;
 
-  fs.writeFileSync(path.join(targetDir, 'README.md'), readmeContent);
-  fs.writeFileSync(path.join(targetDir, `${name}.md`), heartContent);
+  const handoffContent = `# 🤝 Handoff Notes
+
+When a chat session is closed using the \`close\` command, the AI will write a summary here so the next chat session can seamlessly pick up the work using the \`load\` command.
+
+### Last Status
+- (No handoff recorded yet)
+`;
+
+  const architectureContent = `# 🏗️ Architecture & Rules
+
+Define your project's architectural decisions, tech stack, and coding conventions here.
+When the \`review\` command is run, the AI will judge your code based on these rules.
+
+## Tech Stack
+- 
+`;
+
+  fs.writeFileSync(path.join(targetDir, 'VIBE.md'), vibeInstructions);
+  fs.writeFileSync(path.join(vibeDir, `${name}.md`), heartContent);
+  fs.writeFileSync(path.join(vibeDir, `handoff.md`), handoffContent);
+  fs.writeFileSync(path.join(vibeDir, `architecture.md`), architectureContent);
 
   console.log(chalk.green(`\n✅ Successfully created:`));
-  console.log(`  - README.md (with Vibe Badge!)`);
-  console.log(`  - ${name}.md`);
+  console.log(`  - VIBE.md (AI Instructions)`);
+  console.log(`  - .vibe/${name}.md (The Heart)`);
+  console.log(`  - .vibe/handoff.md`);
+  console.log(`  - .vibe/architecture.md`);
 
   if (aiType === 'cursor') {
-    const rules = `You are a Vibe Coding assistant.\nAlways read README.md and ${name}.md before answering.\nFollow the close, load, and audit command instructions strictly.\n`;
+    const rules = `You are a Vibe Coding assistant.\nAlways read VIBE.md before answering.\nFollow the close, load, compress, review, and audit commands strictly.\n`;
     fs.writeFileSync(path.join(targetDir, '.cursorrules'), rules);
     console.log(chalk.blue(`  - .cursorrules generated for Cursor IDE`));
   } else if (aiType === 'claude') {
-    const rules = `You are a Vibe Coding assistant.\nAlways read README.md and ${name}.md before answering.\nFollow the close, load, and audit command instructions strictly.\n`;
+    const rules = `You are a Vibe Coding assistant.\nAlways read VIBE.md before answering.\nFollow the close, load, compress, review, and audit commands strictly.\n`;
     fs.writeFileSync(path.join(targetDir, 'clauderules.md'), rules);
     console.log(chalk.blue(`  - clauderules.md generated for Claude Code`));
   }
 
   console.log();
-  console.log(chalk.yellow(`🔒 Security reminder: Never commit API keys or passwords. Use the 'audit "${name}"' command to check for vulnerabilities.\n`));
   console.log(chalk.magenta.bold(`Ready for vibe coding! 🚀`));
 }
 
 // PACK COMMAND
 program
   .command('pack')
-  .description('Packages the context into vibe-context.txt for copy-pasting to LLMs')
+  .description('Packages the .vibe context into vibe-context.txt for copy-pasting')
   .action(() => {
     const targetDir = process.cwd();
-    const filesToRead = fs.readdirSync(targetDir).filter(f => f.endsWith('.md'));
+    const vibeDir = path.join(targetDir, '.vibe');
+    
+    if (!fs.existsSync(vibeDir)) {
+      console.log(chalk.red(`❌ .vibe/ folder not found. Run 'learnvibecode init' first.`));
+      process.exit(1);
+    }
+
     let contextStr = "--- VIBE CONTEXT ---\n\n";
     
+    // Read VIBE.md from root
+    if (fs.existsSync(path.join(targetDir, 'VIBE.md'))) {
+      contextStr += `=== File: VIBE.md ===\n${fs.readFileSync(path.join(targetDir, 'VIBE.md'), 'utf8')}\n\n`;
+    }
+
+    // Read everything from .vibe folder
+    const filesToRead = fs.readdirSync(vibeDir).filter(f => f.endsWith('.md'));
     filesToRead.forEach(file => {
       try {
-        const content = fs.readFileSync(path.join(targetDir, file), 'utf8');
-        contextStr += `=== File: ${file} ===\n${content}\n\n`;
+        const content = fs.readFileSync(path.join(vibeDir, file), 'utf8');
+        contextStr += `=== File: .vibe/${file} ===\n${content}\n\n`;
       } catch (e) {
         console.log(chalk.red(`Could not read ${file}`));
       }
@@ -158,6 +198,13 @@ program
   .description('Performs a Vibe and Security scan')
   .action(() => {
     const targetDir = process.cwd();
+    const vibeDir = path.join(targetDir, '.vibe');
+    
+    if (!fs.existsSync(vibeDir)) {
+      console.log(chalk.red(`❌ .vibe/ folder not found. Run 'learnvibecode init' first.`));
+      process.exit(1);
+    }
+
     let hasEnv = false;
     let completedGoals = 0;
     let totalGoals = 0;
@@ -166,12 +213,12 @@ program
       hasEnv = true;
     }
 
-    const mdFiles = fs.readdirSync(targetDir).filter(f => f.endsWith('.md') && f !== 'README.md' && f !== 'clauderules.md');
+    const mdFiles = fs.readdirSync(vibeDir).filter(f => f.endsWith('.md') && f !== 'handoff.md' && f !== 'architecture.md');
     
     if (mdFiles.length > 0) {
       const heartFile = mdFiles[0]; 
       try {
-        const content = fs.readFileSync(path.join(targetDir, heartFile), 'utf8');
+        const content = fs.readFileSync(path.join(vibeDir, heartFile), 'utf8');
         const lines = content.split('\n');
         lines.forEach(line => {
           if (line.includes('- [ ]')) totalGoals++;
