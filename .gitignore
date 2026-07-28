@@ -1,3 +1,9 @@
 node_modules/
 .env
 vibe-context.txt
+
+.vibe/
+VIBE.md
+.cursorrules
+clauderules.md
+
