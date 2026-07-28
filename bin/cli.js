@@ -48,19 +48,23 @@ function askAIAndGenerate(name) {
       if (templateAnswer.trim() === '2') template = 'nextjs';
       if (templateAnswer.trim() === '3') template = 'vite';
 
-      rl.question(`\n⚠️  The .vibe/ folder and VIBE.md will be created for the '${name}' project.\nDo you approve? (Y/n): `, (confirm) => {
-        if (confirm.toLowerCase() === 'y' || confirm.trim() === '') {
-          scaffoldAndGenerate(name, aiType, template);
-        } else {
-          console.log(chalk.red('❌ Operation cancelled.'));
-        }
-        rl.close();
+      rl.question(`\n💭 Tell me about your dream project in 1-2 sentences (e.g. A tinder for cats): `, (visionAnswer) => {
+        const vision = visionAnswer.trim() || "A new awesome project";
+
+        rl.question(`\n⚠️  The .vibe/ folder and VIBE.md will be created for the '${name}' project.\nDo you approve? (Y/n): `, (confirm) => {
+          if (confirm.toLowerCase() === 'y' || confirm.trim() === '') {
+            scaffoldAndGenerate(name, aiType, template, vision);
+          } else {
+            console.log(chalk.red('❌ Operation cancelled.'));
+          }
+          rl.close();
+        });
       });
     });
   });
 }
 
-function scaffoldAndGenerate(name, aiType, template) {
+function scaffoldAndGenerate(name, aiType, template, vision) {
   const { spawnSync } = require('child_process');
 
   if (template === 'nextjs') {
@@ -73,10 +77,10 @@ function scaffoldAndGenerate(name, aiType, template) {
     spawnSync('npm', ['install'], { stdio: 'inherit' });
   }
 
-  generateFiles(name, aiType, template);
+  generateFiles(name, aiType, template, vision);
 }
 
-function generateFiles(name, aiType, template) {
+function generateFiles(name, aiType, template, vision) {
   const targetDir = process.cwd();
   const vibeDir = path.join(targetDir, '.vibe');
 
@@ -134,14 +138,15 @@ When the user types this:
 
 This file is the heart of the developer. Keep the soul of your project, ideas, and progress here.
 
-## 📝 Notes
-- 
+## 🌟 Project Vision
+> ${vision}
 
 ## 🎯 Goals
-- [ ] Define the initial goal
+- [ ] Initialize the project and set up the foundation
+- [ ] Build the core features for the vision
 
 ## 🧠 Vibe and Ideas
-(Write down your vibe here)
+Keep the code clean, modular, and extremely focused on the core vision.
 `;
 
   const handoffContent = `# 🤝 Handoff Notes
