@@ -31,7 +31,14 @@ When you start a new chat session to continue working on this project, type this
 - Pulls the latest project contents and context into the new chat.
 - Reads your "Heart of the Project" file to understand the vibe and current goals.
 
-### 3. The Heart of the Project: \`${name}.md\`
+### 3. \`audit "${name}"\` Command
+When you type this command, the AI agent will perform a security check on your project. Its functions are:
+- Scans your codebase for hardcoded API keys, passwords, and sensitive information.
+- Warns you if any sensitive data is found and securely moves them to a \`.env\` file.
+- Ensures your \`.env\` file is added to \`.gitignore\` to prevent accidental leaks.
+- Performs a basic security audit of your code and suggests improvements.
+
+### 4. The Heart of the Project: \`${name}.md\`
 When you join the project, this file is created for you.
 - This file is considered the "heart" of the developer.
 - You will keep your daily logs, processes, ideas, and the project's "vibe" in this file.
@@ -62,6 +69,7 @@ This file is the heart of the developer. You will keep the soul of your project,
   console.log(\`\\n✅ Successfully created:\`);
   console.log(\`  - README.md\`);
   console.log(\`  - \${name}.md\\n\`);
+  console.log(\`🔒 Security reminder: Never commit API keys or passwords. Use the 'audit "\${name}"' command to check for vulnerabilities.\\n\`);
   console.log(\`Ready for vibe coding! 🚀\`);
 }
 
