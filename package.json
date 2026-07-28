@@ -1,6 +1,6 @@
 {
   "name": "@agonxl/vibebase",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "The ultimate foundation for Vibe Coding with AI Agents. 100% Local.",
   "main": "bin/cli.js",
   "bin": {
@@ -9,12 +9,19 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/agonxl/vibebase.git"
+  },
   "keywords": [
-    "vibe",
-    "coding",
+    "vibe-coding",
+    "ai-agents",
+    "cursor",
+    "claude",
+    "llm",
     "cli"
   ],
-  "author": "",
+  "author": "agonxl",
   "license": "ISC",
   "dependencies": {
     "chalk": "^4.1.2",

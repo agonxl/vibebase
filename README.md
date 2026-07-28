@@ -2,6 +2,12 @@
   <h1>🌊 vibebase</h1>
   <p><strong>The ultimate foundation for Vibe Coding with AI Agents.</strong></p>
   <p>Vibecoder friendly. 100% Local. Zero configuration.</p>
+  
+  <p>
+    <a href="https://www.npmjs.com/package/@agonxl/vibebase"><img src="https://img.shields.io/npm/v/@agonxl/vibebase.svg?style=flat-square" alt="NPM Version"></a>
+    <a href="https://github.com/agonxl/vibebase/blob/main/LICENSE"><img src="https://img.shields.io/npm/l/@agonxl/vibebase.svg?style=flat-square" alt="License"></a>
+    <img src="https://img.shields.io/badge/Vibe-Coding-purple.svg?style=flat-square" alt="Vibe Coding">
+  </p>
 </div>
 
 ---
