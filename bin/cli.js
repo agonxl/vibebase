@@ -3,17 +3,61 @@
 const fs = require('fs');
 const path = require('path');
 const readline = require('readline');
+const { program } = require('commander');
+const chalk = require('chalk');
 
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout
 });
 
-const args = process.argv.slice(2);
-let projectName = args[0];
+program
+  .name('learnvibecode')
+  .description('Vibe coding assistant tool')
+  .version('1.0.0');
 
-function generateFiles(name) {
-  const readmeContent = `# Welcome to Vibe Coding! 🚀
+// INIT COMMAND
+program
+  .command('init [projectName]')
+  .description('Initialize a vibe coding project')
+  .action((projectName) => {
+    if (!projectName) {
+      rl.question('What is the name of your project? ', (answer) => {
+        if (!answer.trim()) {
+          console.log(chalk.red('Project name cannot be empty.'));
+          rl.close();
+          return;
+        }
+        askAIAndGenerate(answer.trim());
+      });
+    } else {
+      askAIAndGenerate(projectName);
+    }
+  });
+
+function askAIAndGenerate(name) {
+  rl.question(`Which AI tool do you use most? (1: Cursor, 2: Claude Code, 3: Other): `, (answer) => {
+    let aiType = 'other';
+    if (answer.trim() === '1') aiType = 'cursor';
+    if (answer.trim() === '2') aiType = 'claude';
+    
+    rl.question(`\n⚠️  Vibe Coding files will be created for the '${name}' project.\nDo you approve? (Y/n): `, (confirm) => {
+      if (confirm.toLowerCase() === 'y' || confirm.trim() === '') {
+        generateFiles(name, aiType);
+      } else {
+        console.log(chalk.red('❌ Operation cancelled.'));
+      }
+      rl.close();
+    });
+  });
+}
+
+function generateFiles(name, aiType) {
+  const targetDir = process.cwd();
+  
+  const readmeContent = `[![Vibe: High](https://img.shields.io/badge/Vibe-Coding-purple.svg)](#)
+
+# Welcome to Vibe Coding! 🚀
 
 This project is specially designed for developers who are new to the vibe coding methodology. 
 
@@ -62,38 +106,102 @@ This file is the heart of the developer. You will keep the soul of your project,
 *💡 Reminder: When you finish your work, you can type \`close "${name}"\` in the chat to save the system state and send it for admin approval.*
 `;
 
-  const targetDir = process.cwd();
-  
   fs.writeFileSync(path.join(targetDir, 'README.md'), readmeContent);
   fs.writeFileSync(path.join(targetDir, `${name}.md`), heartContent);
-  
-  console.log(`\n✅ Successfully created:`);
-  console.log(`  - README.md`);
-  console.log(`  - ${name}.md\n`);
-  console.log(`🔒 Security reminder: Never commit API keys or passwords. Use the 'audit "${name}"' command to check for vulnerabilities.\n`);
-  console.log(`Ready for vibe coding! 🚀`);
+
+  console.log(chalk.green(`\n✅ Successfully created:`));
+  console.log(`  - README.md (with Vibe Badge!)`);
+  console.log(`  - ${name}.md`);
+
+  if (aiType === 'cursor') {
+    const rules = `You are a Vibe Coding assistant.\nAlways read README.md and ${name}.md before answering.\nFollow the close, load, and audit command instructions strictly.\n`;
+    fs.writeFileSync(path.join(targetDir, '.cursorrules'), rules);
+    console.log(chalk.blue(`  - .cursorrules generated for Cursor IDE`));
+  } else if (aiType === 'claude') {
+    const rules = `You are a Vibe Coding assistant.\nAlways read README.md and ${name}.md before answering.\nFollow the close, load, and audit command instructions strictly.\n`;
+    fs.writeFileSync(path.join(targetDir, 'clauderules.md'), rules);
+    console.log(chalk.blue(`  - clauderules.md generated for Claude Code`));
+  }
+
+  console.log();
+  console.log(chalk.yellow(`🔒 Security reminder: Never commit API keys or passwords. Use the 'audit "${name}"' command to check for vulnerabilities.\n`));
+  console.log(chalk.magenta.bold(`Ready for vibe coding! 🚀`));
 }
 
-function askConfirmation(name) {
-  rl.question(`\n⚠️  Vibe Coding files (README.md and ${name}.md) will be created in the current directory for the '${name}' project.\nDo you approve? (Y/n): `, (answer) => {
-    if (answer.toLowerCase() === 'y' || answer.trim() === '') {
-      generateFiles(name);
+// PACK COMMAND
+program
+  .command('pack')
+  .description('Packages the context into vibe-context.txt for copy-pasting to LLMs')
+  .action(() => {
+    const targetDir = process.cwd();
+    const filesToRead = fs.readdirSync(targetDir).filter(f => f.endsWith('.md'));
+    let contextStr = "--- VIBE CONTEXT ---\n\n";
+    
+    filesToRead.forEach(file => {
+      try {
+        const content = fs.readFileSync(path.join(targetDir, file), 'utf8');
+        contextStr += `=== File: ${file} ===\n${content}\n\n`;
+      } catch (e) {
+        console.log(chalk.red(`Could not read ${file}`));
+      }
+    });
+
+    fs.writeFileSync(path.join(targetDir, 'vibe-context.txt'), contextStr);
+    console.log(chalk.green(`✅ Packed context into vibe-context.txt!`));
+    console.log(chalk.cyan(`You can now copy the contents of vibe-context.txt and paste it into ChatGPT/Claude web.`));
+    process.exit(0);
+  });
+
+// CHECK COMMAND
+program
+  .command('check')
+  .description('Performs a Vibe and Security scan')
+  .action(() => {
+    const targetDir = process.cwd();
+    let hasEnv = false;
+    let completedGoals = 0;
+    let totalGoals = 0;
+    
+    if (fs.existsSync(path.join(targetDir, '.env'))) {
+      hasEnv = true;
+    }
+
+    const mdFiles = fs.readdirSync(targetDir).filter(f => f.endsWith('.md') && f !== 'README.md' && f !== 'clauderules.md');
+    
+    if (mdFiles.length > 0) {
+      const heartFile = mdFiles[0]; 
+      try {
+        const content = fs.readFileSync(path.join(targetDir, heartFile), 'utf8');
+        const lines = content.split('\n');
+        lines.forEach(line => {
+          if (line.includes('- [ ]')) totalGoals++;
+          if (line.includes('- [x]') || line.includes('- [X]')) {
+            totalGoals++;
+            completedGoals++;
+          }
+        });
+      } catch (e) {
+        // ignore
+      }
+    }
+
+    console.log(chalk.bold.magenta(`\n✨ --- VIBE REPORT --- ✨`));
+    
+    if (hasEnv) {
+      console.log(chalk.green(`🔒 Security: Excellent (.env file found)`));
     } else {
-      console.log('❌ Operation cancelled.');
+      console.log(chalk.yellow(`⚠️ Security Warning: No .env file found. Be careful with API keys!`));
     }
-    rl.close();
-  });
-}
 
-if (!projectName) {
-  rl.question('What is the name of your project? ', (answer) => {
-    if (!answer.trim()) {
-      console.log('Project name cannot be empty.');
-      rl.close();
-      return;
+    console.log(chalk.cyan(`🎯 Goals: ${completedGoals}/${totalGoals} completed`));
+    
+    if (completedGoals === totalGoals && totalGoals > 0) {
+      console.log(chalk.green(`🚀 Vibe is EXCELLENT! Keep it up!`));
+    } else {
+      console.log(chalk.blue(`💡 Vibe is good. Time to tackle those goals!`));
     }
-    askConfirmation(answer.trim());
+    console.log();
+    process.exit(0);
   });
-} else {
-  askConfirmation(projectName);
-}
+
+program.parse(process.argv);
