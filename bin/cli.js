@@ -67,15 +67,15 @@ This file is the heart of the developer. You will keep the soul of your project,
   fs.writeFileSync(path.join(targetDir, 'README.md'), readmeContent);
   fs.writeFileSync(path.join(targetDir, `${name}.md`), heartContent);
   
-  console.log(\`\\n✅ Successfully created:\`);
-  console.log(\`  - README.md\`);
-  console.log(\`  - \${name}.md\\n\`);
-  console.log(\`🔒 Security reminder: Never commit API keys or passwords. Use the 'audit "\${name}"' command to check for vulnerabilities.\\n\`);
-  console.log(\`Ready for vibe coding! 🚀\`);
+  console.log(`\n✅ Successfully created:`);
+  console.log(`  - README.md`);
+  console.log(`  - ${name}.md\n`);
+  console.log(`🔒 Security reminder: Never commit API keys or passwords. Use the 'audit "${name}"' command to check for vulnerabilities.\n`);
+  console.log(`Ready for vibe coding! 🚀`);
 }
 
 function askConfirmation(name) {
-  rl.question(\`\\n⚠️  Vibe Coding files (README.md and \${name}.md) will be created in the current directory for the '\${name}' project.\\nDo you approve? (Y/n): \`, (answer) => {
+  rl.question(`\n⚠️  Vibe Coding files (README.md and ${name}.md) will be created in the current directory for the '${name}' project.\nDo you approve? (Y/n): `, (answer) => {
     if (answer.toLowerCase() === 'y' || answer.trim() === '') {
       generateFiles(name);
     } else {
