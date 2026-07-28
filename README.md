@@ -8,6 +8,9 @@
     <a href="https://github.com/agonxl/vibebase/blob/main/LICENSE"><img src="https://img.shields.io/npm/l/@agonxl/vibebase.svg?style=flat-square" alt="License"></a>
     <img src="https://img.shields.io/badge/Vibe-Coding-purple.svg?style=flat-square" alt="Vibe Coding">
   </p>
+
+  <!-- TODO: UPDATE THIS IMAGE LINK WITH A REAL SCREENSHOT OF THE UI -->
+  <img src="https://via.placeholder.com/800x400/0f172a/8b5cf6?text=Vibebase+Web+Control+Panel+(Upload+a+Screenshot+Here)" alt="Vibebase Control Panel" width="100%" style="border-radius: 10px;">
 </div>
 
 ---
