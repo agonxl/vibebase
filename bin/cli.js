@@ -36,10 +36,11 @@ program
   });
 
 function askAIAndGenerate(name) {
-  rl.question(`Which AI tool do you use most? (1: Cursor, 2: Claude Code, 3: Other): `, (answer) => {
+  rl.question(`Which AI tool do you use most? (1: Cursor, 2: Claude Code, 3: Antigravity, 4: Other): `, (answer) => {
     let aiType = 'other';
     if (answer.trim() === '1') aiType = 'cursor';
     if (answer.trim() === '2') aiType = 'claude';
+    if (answer.trim() === '3') aiType = 'antigravity';
     
     rl.question(`\n⚠️  The .vibe/ folder and VIBE.md will be created for the '${name}' project.\nDo you approve? (Y/n): `, (confirm) => {
       if (confirm.toLowerCase() === 'y' || confirm.trim() === '') {
@@ -149,6 +150,14 @@ When the \`review\` command is run, the AI will judge your code based on these r
     const rules = `You are a Vibe Coding assistant.\nAlways read VIBE.md before answering.\nFollow the close, load, compress, review, and audit commands strictly.\n`;
     fs.writeFileSync(path.join(targetDir, 'clauderules.md'), rules);
     console.log(chalk.blue(`  - clauderules.md generated for Claude Code`));
+  } else if (aiType === 'antigravity') {
+    const agentsDir = path.join(targetDir, '.agents');
+    if (!fs.existsSync(agentsDir)) fs.mkdirSync(agentsDir, { recursive: true });
+    const rules = `You are a Vibe Coding assistant.\nAlways read VIBE.md before answering.\nFollow the close, load, compress, review, and audit commands strictly.\n`;
+    fs.writeFileSync(path.join(agentsDir, 'AGENTS.md'), rules);
+    console.log(chalk.blue(`  - .agents/AGENTS.md generated for Google Antigravity`));
+  } else {
+    console.log(chalk.yellow(`  - Note: For ChatGPT, Kimi, Codex, or others, you can just use the 'npx @agonxl/vibebase pack' command and paste the context!`));
   }
 
   console.log();
