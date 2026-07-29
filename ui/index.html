@@ -5,74 +5,136 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vibebase Control Panel</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="background-blobs">
-        <div class="blob blob-1"></div>
-        <div class="blob blob-2"></div>
-    </div>
-    
-    <div class="dashboard-container">
-        <header class="glass-panel">
-            <div class="logo">
-                <span class="wave">🌊</span>
-                <h1>Vibebase <span class="highlight">Control Panel</span></h1>
+    <div class="mesh-background"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="logo-container">
+            <span class="v-logo">🌊</span>
+        </div>
+        <nav class="side-nav">
+            <a href="#" class="active"><span class="icon">🎛️</span> Dashboard</a>
+            <a href="#"><span class="icon">📁</span> Projects</a>
+            <a href="#"><span class="icon">🔔</span> Alerts</a>
+            <a href="#"><span class="icon">👥</span> Team</a>
+            <a href="#"><span class="icon">⚙️</span> Settings</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="main-wrapper">
+        <!-- Top Bar -->
+        <header class="top-bar">
+            <div class="brand">
+                <h1 class="glow-text">VIBEBASE</h1>
+                <span class="subtitle">CONTROL PANEL</span>
             </div>
-            <div class="vibe-score">
-                <span id="score-text">Loading...</span>
-                <div class="progress-ring-container">
-                    <svg class="progress-ring" width="50" height="50">
-                        <circle class="progress-ring__circle" stroke="white" stroke-width="4" fill="transparent" r="20" cx="25" cy="25"/>
-                    </svg>
-                </div>
+            <div class="search-bar">
+                <span class="search-icon">🔍</span>
+                <input type="text" placeholder="Search...">
+            </div>
+            <div class="user-profile">
+                <span class="bell">🔔</span>
+                <span class="username">Dev_Alex</span>
+                <div class="avatar"></div>
             </div>
         </header>
 
-        <main class="grid-layout">
-            <!-- Left Column -->
-            <div class="col">
-                <section class="glass-panel card">
-                    <h2>🎯 To-Do</h2>
-                    <ul id="todo-list" class="task-list">
-                        <li class="loading">Loading...</li>
-                    </ul>
-                </section>
+        <!-- Dashboard Grid -->
+        <main class="dashboard-grid">
+            
+            <!-- Security Card -->
+            <section class="glass-card neon-purple">
+                <div class="card-header">
+                    <h2>Security Status</h2>
+                    <span class="dots">•••</span>
+                </div>
+                <div class="security-hero" id="security-hero">
+                    <h3 class="safe-text">100% SECURE</h3>
+                    <div class="shield-icon glow">🛡️</div>
+                </div>
+                <div class="security-details">
+                    <div class="detail-row">
+                        <span>Threat Level:</span>
+                        <span class="safe-text" id="threat-level">Low</span>
+                    </div>
+                    <div class="detail-row">
+                        <span>Last Scan:</span>
+                        <span>Just now</span>
+                    </div>
+                    <div class="detail-row active-row">
+                        <span>Active</span>
+                        <span class="badge safe-bg">Active</span>
+                    </div>
+                    <div class="detail-row">
+                        <span>System Integrity:</span>
+                        <span class="check-icon" style="color: #22c55e;">✔️</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Goals Tracker Card -->
+            <section class="glass-card neon-cyan">
+                <div class="card-header">
+                    <h2>Goals Tracker</h2>
+                    <span class="dots">•••</span>
+                </div>
+                <p class="subtext">Dev Milestones</p>
                 
-                <section class="glass-panel card">
-                    <h2>✅ Done</h2>
-                    <ul id="done-list" class="task-list done">
-                        <li class="loading">Loading...</li>
+                <div class="progress-hero">
+                    <div class="progress-stats">
+                        <p>Q3 Progress:</p>
+                        <h1 class="percent" id="score-text">0%</h1>
+                        <p class="task-count" id="task-count-text">0 of 0 Tasks Complete</p>
+                    </div>
+                    <div class="progress-ring-container large-ring">
+                        <svg class="progress-ring" width="100" height="100">
+                            <circle class="progress-ring__bg" stroke="rgba(255,255,255,0.1)" stroke-width="8" fill="transparent" r="40" cx="50" cy="50"/>
+                            <circle class="progress-ring__circle" stroke="url(#gradient)" stroke-width="8" stroke-linecap="round" fill="transparent" r="40" cx="50" cy="50"/>
+                            <defs>
+                                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#4facfe" />
+                                    <stop offset="100%" stop-color="#8b5cf6" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="task-section">
+                    <h3>Active</h3>
+                    <ul id="todo-list" class="styled-tasks">
+                        <li>Loading...</li>
                     </ul>
-                </section>
-            </div>
+                    <br>
+                    <h3>Completed</h3>
+                    <ul id="done-list" class="styled-tasks completed">
+                        <li>Loading...</li>
+                    </ul>
+                </div>
+            </section>
 
-            <!-- Right Column -->
-            <div class="col">
-                <section class="glass-panel card">
-                    <h2>🤝 Last Status (Handoff)</h2>
-                    <div id="handoff-content" class="markdown-content">
-                        Loading...
-                    </div>
-                </section>
+            <!-- Handoff Card -->
+            <section class="glass-card neon-mixed">
+                <div class="card-header">
+                    <h2>Handoff Notes</h2>
+                    <span class="badge safe-bg">Status</span>
+                </div>
+                <p class="subtext">Project Handover</p>
+                
+                <div class="handoff-meta">
+                    <p>Subject: <strong>Last Session Recap</strong></p>
+                    <p>Author: <strong>AI Agent</strong>, Just now</p>
+                </div>
 
-                <section class="glass-panel card security-card" id="security-card">
-                    <h2>🛡️ Security Status</h2>
-                    <div class="security-status" id="security-status">
-                        Loading...
-                    </div>
-                </section>
+                <div id="handoff-content" class="handoff-markdown">
+                    Loading...
+                </div>
+            </section>
 
-                <section class="glass-panel card tutorial-card">
-                    <h2>🎓 How to Vibe Code</h2>
-                    <div class="markdown-content" style="font-size: 0.95em; line-height: 1.6; opacity: 0.9;">
-                        <p><strong>1. Start a Session:</strong> Type <code>load &lt;name&gt;</code> to load your context and handoff notes.</p>
-                        <p><strong>2. Build:</strong> Tell the AI what you want. It will strictly follow your <i>Project Vision</i>.</p>
-                        <p><strong>3. Verify:</strong> Type <code>review</code> for code review or <code>audit</code> to scan for API keys.</p>
-                        <p><strong>4. Finish:</strong> Type <code>close &lt;name&gt;</code> to save state, write handoff, and git push.</p>
-                    </div>
-                </section>
-            </div>
         </main>
     </div>
     <script src="app.js"></script>

@@ -15,14 +15,14 @@ function renderDashboard(data) {
     todoList.innerHTML = '';
     doneList.innerHTML = '';
 
-    if (data.todo.length === 0) todoList.innerHTML = `<li><span style="opacity: 0.5">No goals added yet...</span></li>`;
+    if (data.todo.length === 0) todoList.innerHTML = `<li><span style="opacity: 0.5">No active tasks...</span></li>`;
     data.todo.forEach(task => {
         const li = document.createElement('li');
         li.textContent = task;
         todoList.appendChild(li);
     });
 
-    if (data.done.length === 0) doneList.innerHTML = `<li><span style="opacity: 0.5">No completed goals yet...</span></li>`;
+    if (data.done.length === 0) doneList.innerHTML = `<li><span style="opacity: 0.5">No completed tasks yet...</span></li>`;
     data.done.forEach(task => {
         const li = document.createElement('li');
         li.textContent = task;
@@ -35,18 +35,31 @@ function renderDashboard(data) {
         percentage = Math.round((data.done.length / total) * 100);
     }
     
-    document.getElementById('score-text').textContent = `%${percentage} Vibe`;
+    document.getElementById('score-text').textContent = `${percentage}%`;
+    document.getElementById('task-count-text').textContent = `${data.done.length} of ${total} Tasks Complete`;
     updateProgressRing(percentage);
 
-    document.getElementById('handoff-content').textContent = data.handoff || "No handoff note found.";
+    // Using basic markdown formatting for handoff content
+    let handoffHtml = (data.handoff || "No handoff note found.")
+        .replace(/\n/g, '<br>')
+        .replace(/### (.*)/g, '<h3>$1</h3>')
+        .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+        .replace(/- (.*)/g, '<li>$1</li>');
+        
+    document.getElementById('handoff-content').innerHTML = handoffHtml;
 
-    const secStatus = document.getElementById('security-status');
+    // Security Status
+    const threatLevel = document.getElementById('threat-level');
+    const secHero = document.getElementById('security-hero');
+    
     if (data.hasEnv) {
-        secStatus.innerHTML = `✅ .env file is secure!`;
-        secStatus.className = 'security-status security-safe';
+        threatLevel.textContent = 'Low';
+        threatLevel.className = 'safe-text';
+        secHero.innerHTML = `<h3 class="safe-text">100% SECURE</h3><div class="shield-icon glow">🛡️</div>`;
     } else {
-        secStatus.innerHTML = `⚠️ WARNING: .env file not found. You might be vulnerable to secrets leakage!`;
-        secStatus.className = 'security-status security-warning';
+        threatLevel.textContent = 'High';
+        threatLevel.className = 'danger-text';
+        secHero.innerHTML = `<h3 class="danger-text">VULNERABLE</h3><div class="shield-icon glow danger">⚠️</div>`;
     }
 }
 
