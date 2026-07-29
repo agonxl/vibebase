@@ -420,9 +420,18 @@ program
     });
   });
 
-// FORCE INIT IF NO ARGUMENTS
+// SMART DEFAULT COMMAND ROUTING
 if (process.argv.length === 2) {
-  process.argv.push('init');
+  const targetDir = process.cwd();
+  const vibeDir = path.join(targetDir, '.vibe');
+  
+  if (fs.existsSync(vibeDir)) {
+    // If initialized, default to opening the UI Dashboard
+    process.argv.push('ui');
+  } else {
+    // If not initialized, start the setup wizard
+    process.argv.push('init');
+  }
 }
 
 program.parse(process.argv);

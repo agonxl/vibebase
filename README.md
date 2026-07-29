@@ -14,7 +14,7 @@
 
 ---
 
-## 🚀 Quick Start (So simple, a baby could do it)
+## 🚀 Quick Start (Zero Configuration)
 
 You don't even need to install anything. Just open your terminal, go to your project folder, and run:
 
@@ -22,7 +22,9 @@ You don't even need to install anything. Just open your terminal, go to your pro
 npx @agonxl/vibebase
 ```
 
-The interactive wizard will ask you 2 simple questions and instantly set up your project for AI agents (like Claude Code, Cursor, ChatGPT).
+**That's it. Just one command.** Vibebase is smart enough to know what you want:
+- If this is a **new project**, it automatically runs the interactive `init` wizard to set up your AI Agent infrastructure and scaffold your framework (Next.js/Vite).
+- If your project is **already initialized**, it automatically launches the beautiful **Web Control Panel (UI)** in your browser!
 
 ### What does it do?
 It builds a complete **Agentic Workflow Architecture** that stays 100% on your local machine:
