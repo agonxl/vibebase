@@ -43,7 +43,7 @@ function askAIAndGenerate(name) {
     if (answer.trim() === '2') aiType = 'claude';
     if (answer.trim() === '3') aiType = 'antigravity';
     
-    rl.question(`\nDo you want to scaffold a starter project?\n1) No (Just Vibe)\n2) Next.js (React + Tailwind)\n3) Vite (React SPA)\nSelect (1/2/3): `, (templateAnswer) => {
+    rl.question(`\nDo you want to scaffold a starter project?\n1) No (Add Vibebase to my existing project)\n2) Next.js (React + Tailwind)\n3) Vite (React SPA)\nSelect (1/2/3): `, (templateAnswer) => {
       let template = 'none';
       if (templateAnswer.trim() === '2') template = 'nextjs';
       if (templateAnswer.trim() === '3') template = 'vite';
