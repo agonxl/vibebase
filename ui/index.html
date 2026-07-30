@@ -13,14 +13,26 @@
     <!-- Sidebar -->
     <aside class="sidebar">
         <div class="logo-container">
-            <span class="v-logo">🌊</span>
+            <span class="v-logo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h4l3-9 5 18 3-9h5"/></svg>
+            </span>
         </div>
         <nav class="side-nav">
-            <a href="#" class="active"><span class="icon">🎛️</span> Dashboard</a>
-            <a href="#"><span class="icon">📁</span> Projects</a>
-            <a href="#"><span class="icon">🔔</span> Alerts</a>
-            <a href="#"><span class="icon">👥</span> Team</a>
-            <a href="#"><span class="icon">⚙️</span> Settings</a>
+            <a href="#" class="active" data-tab="dashboard">
+                <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg></span> Dashboard
+            </a>
+            <a href="#" data-tab="projects">
+                <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-1.22-1.8A2 2 0 0 0 7.53 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/></svg></span> Projects
+            </a>
+            <a href="#" data-tab="alerts">
+                <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></span> Alerts
+            </a>
+            <a href="#" data-tab="team">
+                <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span> Team
+            </a>
+            <a href="#" data-tab="settings">
+                <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg></span> Settings
+            </a>
         </nav>
     </aside>
 
@@ -33,7 +45,9 @@
                 <span class="subtitle">CONTROL PANEL</span>
             </div>
             <div class="search-bar">
-                <span class="search-icon">🔍</span>
+                <span class="search-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                </span>
                 <input type="text" placeholder="Search...">
             </div>
             <div class="user-profile">
@@ -43,99 +57,147 @@
             </div>
         </header>
 
-        <!-- Dashboard Grid -->
-        <main class="dashboard-grid">
+        <!-- Dynamic Views -->
+        <div id="view-container">
             
-            <!-- Security Card -->
-            <section class="glass-card neon-purple">
-                <div class="card-header">
-                    <h2>Security Status</h2>
-                    <span class="dots">•••</span>
-                </div>
-                <div class="security-hero" id="security-hero">
-                    <h3 class="safe-text">100% SECURE</h3>
-                    <div class="shield-icon glow">🛡️</div>
-                </div>
-                <div class="security-details">
-                    <div class="detail-row">
-                        <span>Threat Level:</span>
-                        <span class="safe-text" id="threat-level">Low</span>
-                    </div>
-                    <div class="detail-row">
-                        <span>Last Scan:</span>
-                        <span>Just now</span>
-                    </div>
-                    <div class="detail-row active-row">
-                        <span>Active</span>
-                        <span class="badge safe-bg">Active</span>
-                    </div>
-                    <div class="detail-row">
-                        <span>System Integrity:</span>
-                        <span class="check-icon" style="color: #22c55e;">✔️</span>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Goals Tracker Card -->
-            <section class="glass-card neon-cyan">
-                <div class="card-header">
-                    <h2>Goals Tracker</h2>
-                    <span class="dots">•••</span>
-                </div>
-                <p class="subtext">Dev Milestones</p>
+            <!-- VIEW: DASHBOARD -->
+            <main class="dashboard-grid tab-view active" id="view-dashboard">
                 
-                <div class="progress-hero">
-                    <div class="progress-stats">
-                        <p>Q3 Progress:</p>
-                        <h1 class="percent" id="score-text">0%</h1>
-                        <p class="task-count" id="task-count-text">0 of 0 Tasks Complete</p>
+                <!-- Security Card -->
+                <section class="glass-card neon-purple">
+                    <div class="card-header">
+                        <h2>Security Status</h2>
+                        <span class="dots">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+                        </span>
                     </div>
-                    <div class="progress-ring-container large-ring">
-                        <svg class="progress-ring" width="100" height="100">
-                            <circle class="progress-ring__bg" stroke="rgba(255,255,255,0.1)" stroke-width="8" fill="transparent" r="40" cx="50" cy="50"/>
-                            <circle class="progress-ring__circle" stroke="url(#gradient)" stroke-width="8" stroke-linecap="round" fill="transparent" r="40" cx="50" cy="50"/>
-                            <defs>
-                                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" stop-color="#4facfe" />
-                                    <stop offset="100%" stop-color="#8b5cf6" />
-                                </linearGradient>
-                            </defs>
-                        </svg>
+                    <div class="security-hero" id="security-hero">
+                        <h3 class="safe-text">100% SECURE</h3>
+                        <div class="shield-icon glow">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+                        </div>
                     </div>
-                </div>
+                    <div class="security-details">
+                        <div class="detail-row">
+                            <span>Threat Level:</span>
+                            <span class="safe-text" id="threat-level">Low</span>
+                        </div>
+                        <div class="detail-row">
+                            <span>Last Scan:</span>
+                            <span>Just now</span>
+                        </div>
+                        <div class="detail-row active-row">
+                            <span>Active</span>
+                            <span class="badge safe-bg">Active</span>
+                        </div>
+                        <div class="detail-row">
+                            <span>System Integrity:</span>
+                            <span class="check-icon safe-text">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>
+                            </span>
+                        </div>
+                    </div>
+                </section>
 
-                <div class="task-section">
-                    <h3>Active</h3>
-                    <ul id="todo-list" class="styled-tasks">
-                        <li>Loading...</li>
-                    </ul>
-                    <br>
-                    <h3>Completed</h3>
-                    <ul id="done-list" class="styled-tasks completed">
-                        <li>Loading...</li>
-                    </ul>
-                </div>
-            </section>
+                <!-- Goals Tracker Card -->
+                <section class="glass-card neon-cyan">
+                    <div class="card-header">
+                        <h2>Goals Tracker</h2>
+                        <span class="dots">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+                        </span>
+                    </div>
+                    <p class="subtext">Dev Milestones</p>
+                    
+                    <div class="progress-hero">
+                        <div class="progress-stats">
+                            <p>Q3 Progress:</p>
+                            <h1 class="percent" id="score-text">0%</h1>
+                            <p class="task-count" id="task-count-text">0 of 0 Tasks Complete</p>
+                        </div>
+                        <div class="progress-ring-container large-ring">
+                            <svg class="progress-ring" width="100" height="100">
+                                <circle class="progress-ring__bg" stroke="rgba(255,255,255,0.1)" stroke-width="8" fill="transparent" r="40" cx="50" cy="50"/>
+                                <circle class="progress-ring__circle" stroke="url(#gradient)" stroke-width="8" stroke-linecap="round" fill="transparent" r="40" cx="50" cy="50"/>
+                                <defs>
+                                    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" stop-color="#4facfe" />
+                                        <stop offset="100%" stop-color="#8b5cf6" />
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                        </div>
+                    </div>
 
-            <!-- Handoff Card -->
-            <section class="glass-card neon-mixed">
-                <div class="card-header">
-                    <h2>Handoff Notes</h2>
-                    <span class="badge safe-bg">Status</span>
-                </div>
-                <p class="subtext">Project Handover</p>
-                
-                <div class="handoff-meta">
-                    <p>Subject: <strong>Last Session Recap</strong></p>
-                    <p>Author: <strong>AI Agent</strong>, Just now</p>
-                </div>
+                    <div class="task-section">
+                        <h3>Active</h3>
+                        <ul id="todo-list" class="styled-tasks">
+                            <li>Loading...</li>
+                        </ul>
+                        <br>
+                        <h3>Completed</h3>
+                        <ul id="done-list" class="styled-tasks completed">
+                            <li>Loading...</li>
+                        </ul>
+                    </div>
+                </section>
 
-                <div id="handoff-content" class="handoff-markdown">
-                    Loading...
-                </div>
-            </section>
+                <!-- Handoff Card -->
+                <section class="glass-card neon-mixed">
+                    <div class="card-header">
+                        <h2>Handoff Notes</h2>
+                        <span class="badge safe-bg">Status</span>
+                    </div>
+                    <p class="subtext">Project Handover</p>
+                    
+                    <div class="handoff-meta">
+                        <p>Subject: <strong>Last Session Recap</strong></p>
+                        <p>Author: <strong>AI Agent</strong>, Just now</p>
+                    </div>
 
-        </main>
+                    <div id="handoff-content" class="handoff-markdown">
+                        Loading...
+                    </div>
+                </section>
+
+            </main>
+
+            <!-- VIEW: PROJECTS -->
+            <main class="tab-view" id="view-projects">
+                <div class="empty-state">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="var(--neon-purple)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.5; margin-bottom: 20px;"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-1.22-1.8A2 2 0 0 0 7.53 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/></svg>
+                    <h2>Projects Overview</h2>
+                    <p class="subtext">Multi-project management interface is currently under construction.</p>
+                </div>
+            </main>
+
+            <!-- VIEW: ALERTS -->
+            <main class="tab-view" id="view-alerts">
+                <div class="empty-state">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="var(--neon-cyan)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.5; margin-bottom: 20px;"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+                    <h2>Alerts & Notifications</h2>
+                    <p class="subtext">You have no active alerts at this time.</p>
+                </div>
+            </main>
+
+            <!-- VIEW: TEAM -->
+            <main class="tab-view" id="view-team">
+                <div class="empty-state">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="var(--neon-purple)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.5; margin-bottom: 20px;"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    <h2>Team Workspaces</h2>
+                    <p class="subtext">Invite other developers and AI agents to collaborate in real-time.</p>
+                </div>
+            </main>
+
+            <!-- VIEW: SETTINGS -->
+            <main class="tab-view" id="view-settings">
+                <div class="empty-state">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="var(--neon-cyan)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.5; margin-bottom: 20px;"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+                    <h2>System Settings</h2>
+                    <p class="subtext">Configuration for Vibebase Core Engine v3.0.</p>
+                </div>
+            </main>
+        </div>
     </div>
     <script src="app.js"></script>
 </body>

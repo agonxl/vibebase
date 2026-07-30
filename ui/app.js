@@ -55,11 +55,11 @@ function renderDashboard(data) {
     if (data.hasEnv) {
         threatLevel.textContent = 'Low';
         threatLevel.className = 'safe-text';
-        secHero.innerHTML = `<h3 class="safe-text">100% SECURE</h3><div class="shield-icon glow">🛡️</div>`;
+        secHero.innerHTML = `<h3 class="safe-text">100% SECURE</h3><div class="shield-icon glow"><svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></div>`;
     } else {
         threatLevel.textContent = 'High';
         threatLevel.className = 'danger-text';
-        secHero.innerHTML = `<h3 class="danger-text">VULNERABLE</h3><div class="shield-icon glow danger">⚠️</div>`;
+        secHero.innerHTML = `<h3 class="danger-text">VULNERABLE</h3><div class="shield-icon glow danger"><svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg></div>`;
     }
 
     // Dynamic Project & Git Data
@@ -67,8 +67,13 @@ function renderDashboard(data) {
     const gitBadge = document.getElementById('git-badge');
     
     if (data.gitBranch) {
-        gitBadge.style.display = 'inline-block';
-        gitBadge.textContent = `🌱 ${data.gitBranch} ${data.uncommitted > 0 ? `(${data.uncommitted} changes)` : ''}`;
+        gitBadge.style.display = 'inline-flex';
+        gitBadge.style.alignItems = 'center';
+        
+        // Git branch SVG icon instead of emoji
+        const gitIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;"><path d="M18 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M6 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M6 15V9a3 3 0 1 0 0-6 3 3 0 0 0 0 6v6"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>`;
+        gitBadge.innerHTML = `${gitIcon} ${data.gitBranch} ${data.uncommitted > 0 ? `(${data.uncommitted} changes)` : ''}`;
+        
         if (data.uncommitted > 0) {
             gitBadge.style.background = 'rgba(239, 68, 68, 0.2)';
             gitBadge.style.color = 'var(--danger)';
@@ -90,6 +95,24 @@ function updateProgressRing(percent) {
     const offset = circumference - percent / 100 * circumference;
     circle.style.strokeDashoffset = offset;
 }
+
+// Tab Switching Logic
+document.querySelectorAll('.side-nav a').forEach(link => {
+    link.addEventListener('click', (e) => {
+        e.preventDefault();
+        
+        document.querySelectorAll('.side-nav a').forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+        
+        document.querySelectorAll('.tab-view').forEach(view => {
+            view.classList.remove('active');
+        });
+        
+        const targetId = 'view-' + link.getAttribute('data-tab');
+        const targetView = document.getElementById(targetId);
+        if (targetView) targetView.classList.add('active');
+    });
+});
 
 fetchVibeData();
 setInterval(fetchVibeData, 5000);
