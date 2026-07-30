@@ -393,15 +393,33 @@ program
                 handoff = fs.readFileSync(path.join(vibeDir, 'handoff.md'), 'utf8');
             }
 
+            let alerts = [];
+
             try {
                 const { execSync } = require('child_process');
                 gitBranch = execSync('git rev-parse --abbrev-ref HEAD', {cwd: targetDir, stdio: 'pipe'}).toString().trim();
                 const statusOut = execSync('git status --porcelain', {cwd: targetDir, stdio: 'pipe'}).toString().trim();
-                if (statusOut) uncommitted = statusOut.split('\n').length;
+                if (statusOut) {
+                    const lines = statusOut.split('\n');
+                    uncommitted = lines.length;
+                    alerts.push({
+                        type: 'warning',
+                        title: 'Uncommitted Drifts',
+                        message: `You have ${uncommitted} uncommitted changes in the repository. Please review and commit to avoid losing work.`
+                    });
+                }
             } catch(e) {}
 
+            if (!hasEnv) {
+                alerts.push({
+                    type: 'danger',
+                    title: 'Environment Vulnerability',
+                    message: `Missing .env file. Your environment configuration is not secured. Please create one if the project requires it.`
+                });
+            }
+
             res.writeHead(200, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ projectName, gitBranch, uncommitted, todo, done, handoff, hasEnv }));
+            res.end(JSON.stringify({ projectName, gitBranch, uncommitted, todo, done, handoff, hasEnv, alerts }));
             return;
         }
 

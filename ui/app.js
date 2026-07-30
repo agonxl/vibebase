@@ -84,6 +84,45 @@ function renderDashboard(data) {
     } else {
         gitBadge.style.display = 'none';
     }
+
+    // Render Alerts
+    const alertsView = document.getElementById('view-alerts');
+    if (alertsView) {
+        if (data.alerts && data.alerts.length > 0) {
+            // Remove flex centering for empty state
+            alertsView.style.justifyContent = 'flex-start';
+            alertsView.style.padding = '2rem';
+            
+            let alertsHtml = `<h2 style="margin-bottom: 20px; font-weight: 600;">System Alerts (${data.alerts.length})</h2>`;
+            data.alerts.forEach(alert => {
+                const color = alert.type === 'danger' ? 'var(--danger)' : (alert.type === 'warning' ? '#f59e0b' : 'var(--neon-purple)');
+                const icon = alert.type === 'danger' ? `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>` : `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`;
+                
+                alertsHtml += `
+                <div class="glass-card" style="margin-bottom: 15px; border-left: 4px solid ${color};">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <div style="color: ${color};">${icon}</div>
+                        <div>
+                            <h3 style="margin-bottom: 5px; color: ${color};">${alert.title}</h3>
+                            <p style="opacity: 0.8; font-size: 0.95rem;">${alert.message}</p>
+                        </div>
+                    </div>
+                </div>`;
+            });
+            alertsView.innerHTML = alertsHtml;
+        } else {
+            // Restore empty state
+            alertsView.style.justifyContent = 'center';
+            alertsView.style.padding = '0';
+            alertsView.innerHTML = `
+                <div class="empty-state">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="var(--neon-cyan)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.5; margin-bottom: 20px;"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+                    <h2>Alerts & Notifications</h2>
+                    <p class="subtext">You have no active alerts at this time. System is perfectly healthy.</p>
+                </div>
+            `;
+        }
+    }
 }
 
 function updateProgressRing(percent) {
