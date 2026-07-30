@@ -61,6 +61,24 @@ function renderDashboard(data) {
         threatLevel.className = 'danger-text';
         secHero.innerHTML = `<h3 class="danger-text">VULNERABLE</h3><div class="shield-icon glow danger">⚠️</div>`;
     }
+
+    // Dynamic Project & Git Data
+    document.getElementById('project-name').textContent = data.projectName || "Vibebase Project";
+    const gitBadge = document.getElementById('git-badge');
+    
+    if (data.gitBranch) {
+        gitBadge.style.display = 'inline-block';
+        gitBadge.textContent = `🌱 ${data.gitBranch} ${data.uncommitted > 0 ? `(${data.uncommitted} changes)` : ''}`;
+        if (data.uncommitted > 0) {
+            gitBadge.style.background = 'rgba(239, 68, 68, 0.2)';
+            gitBadge.style.color = 'var(--danger)';
+        } else {
+            gitBadge.style.background = 'rgba(34, 197, 94, 0.2)';
+            gitBadge.style.color = 'var(--safe)';
+        }
+    } else {
+        gitBadge.style.display = 'none';
+    }
 }
 
 function updateProgressRing(percent) {

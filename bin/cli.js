@@ -365,10 +365,20 @@ program
             let done = [];
             let handoff = '';
             let hasEnv = fs.existsSync(path.join(targetDir, '.env'));
+            let projectName = 'Vibebase Project';
+            let gitBranch = '';
+            let uncommitted = 0;
+
+            if (fs.existsSync(path.join(targetDir, 'package.json'))) {
+                try {
+                    const pkg = JSON.parse(fs.readFileSync(path.join(targetDir, 'package.json'), 'utf8'));
+                    if (pkg.name) projectName = pkg.name;
+                } catch(e) {}
+            }
 
             const mdFiles = fs.readdirSync(vibeDir).filter(f => f.endsWith('.md') && f !== 'handoff.md' && f !== 'architecture.md' && f !== 'archive.md');
-            
             if (mdFiles.length > 0) {
+                if (projectName === 'Vibebase Project') projectName = mdFiles[0].replace('.md', '');
                 try {
                     const content = fs.readFileSync(path.join(vibeDir, mdFiles[0]), 'utf8');
                     const lines = content.split('\n');
@@ -383,8 +393,15 @@ program
                 handoff = fs.readFileSync(path.join(vibeDir, 'handoff.md'), 'utf8');
             }
 
+            try {
+                const { execSync } = require('child_process');
+                gitBranch = execSync('git rev-parse --abbrev-ref HEAD', {cwd: targetDir, stdio: 'pipe'}).toString().trim();
+                const statusOut = execSync('git status --porcelain', {cwd: targetDir, stdio: 'pipe'}).toString().trim();
+                if (statusOut) uncommitted = statusOut.split('\n').length;
+            } catch(e) {}
+
             res.writeHead(200, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ todo, done, handoff, hasEnv }));
+            res.end(JSON.stringify({ projectName, gitBranch, uncommitted, todo, done, handoff, hasEnv }));
             return;
         }
 
